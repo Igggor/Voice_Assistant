@@ -31,7 +31,8 @@ commands_dict = {
         'clava': ['поменяй язык','смени клавиатуру', 'смени язык', 'смени язык системы', 'измени клавиатуру', 'измени язык', 'измени язык системы', 'изменить клавиатуру', 'изменить язык', 'изменить язык системы'],
         "anek": ['анекдот','рассмеши меня','ты знаешь анекдоты'],
         "weather":["какая погода", "погода", "погоду"],
-        "curs":["евро", "доллар", "курс валют"]
+        "curs":["евро", "доллар", "курс валют"],
+        "open_link": ["открой вк", "открой телеграм", "открой телеграмм", "открой ютуб", "открой youtube", "открой telegram"]
     }
 }
 def here():
@@ -62,6 +63,7 @@ while(is_work):
     if query.startswith(commands_dict["alias"]):
     # обращаются к боту
         cmd = query
+        query = list(cmd.split())
         #Удаляем обраение к ассистенту
         for x in commands_dict['alias']:
             cmd = cmd.replace(x, "").strip()
@@ -71,5 +73,10 @@ while(is_work):
         #Получаем команду
         for k, v in commands_dict['commands'].items():
             if cmd in v:
-                speak(globals()[k]())
+                print(k)
+                if k == "open_link":
+                    if (query[-1] == "telegram" or query[-1] == "телеграм"): speak(globals()[k]("telegram"))
+                    elif (query[-1] == "вк"): speak(globals()[k]("vk"))
+                    if (query[-1] == "ютуб" or query[-1] == "youtube"): speak(globals()[k]("youtube"))
+                else: speak(globals()[k]())
                 break

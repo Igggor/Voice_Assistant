@@ -1,6 +1,7 @@
 import random
 import pyautogui as p
 from selenium import webdriver
+import webbrowser
 import subprocess
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
@@ -188,6 +189,21 @@ def chrome():
     ch = subprocess.Popen(chrome_path)
     ch.poll()
     return "Открыт браузер хром"
+
+
+def open_link(what="telegram"):
+    if (what == "telegram"):
+        webbrowser.open_new_tab("https://web.telegram.org/z/")
+        return "телеграм открыт, пользуйся"
+    elif (what == "vk"):
+        webbrowser.open_new_tab("https://vk.com/")
+        return "вк открыт, потом расскажешь, что там нового в ленте"
+
+    elif (what == "youtube"):
+        webbrowser.open_new_tab("https://www.youtube.com/")
+        return "ютуб открыт, погнали смотреть"
+
+
 #def open(what):
 #    pass
 #r = 2

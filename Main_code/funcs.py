@@ -68,7 +68,7 @@ def create_task():#Создание заметки в todo листе
     query = listen_command()
     with open('todo-list.txt', 'a') as file:
         file.write(f'{query}\n')
-    return f'Задача {query} добавлена в todo-list!'
+    return f'Задача {query} создана и добавлена в список задач'
 
 
 #Функция анекдотов (хотел сделать API но мне не понравились анекдоты на том сайте, поэтому пока что массив)
@@ -96,7 +96,14 @@ def speak(sth):
 
 
 def thanks():
-    return "Был рад помочь."
+    n = random.randint(0, 3)
+    print(n)
+    match n:
+        case 0: return "Всегда пожалуйста"
+        case 1: return "Пожалуйста"
+        case 2: return "Был рад помочь"
+        case 3: return "Не за что"
+
 
 
 def curs():
@@ -115,7 +122,14 @@ def curs():
 
 
 def greeting():
-    return 'Приветcтвую тебя!'
+    n = random.randint(0, 5)
+    match n:
+        case 0: return "Приветик"
+        case 1: return "Привет"
+        case 2: return "Дароу"
+        case 3: return "Ку"
+        case 4: return "Привет, что такое?"
+        case 5: return 'Приветcтвую тебя!'
 
 
 

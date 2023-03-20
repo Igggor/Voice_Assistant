@@ -32,7 +32,7 @@ commands_dict = {
         "anek": ['анекдот','рассмеши меня','ты знаешь анекдоты'],
         "weather":["какая погода", "погода", "погоду"],
         "curs":["евро", "доллар", "курс валют"],
-        "open_link": ["открой вк", "открой телеграм", "открой телеграмм", "открой ютуб", "открой youtube", "открой telegram"]
+        "open_link": ["открой вк", "открой телеграм", "открой телеграмм", "открой ютуб", "открой youtube", "открой telegram", "открой вконтакте"]
     }
 }
 def here():
@@ -73,7 +73,6 @@ while(is_work):
         #Получаем команду
         for k, v in commands_dict['commands'].items():
             if cmd in v:
-                print(k)
                 if k == "open_link":
                     if (query[-1] == "telegram" or query[-1] == "телеграм"): speak(globals()[k]("telegram"))
                     elif (query[-1] == "вк"): speak(globals()[k]("vk"))

@@ -32,7 +32,6 @@ def listen_command():
         return 'Команда не распознана'
 
 def play_music(play = True):# Проигрование функции, но еще надо дописать
-
     name = random.choice(os.listdir('D:\Music'))
     song = os.path.join('D:\Music', name)
     from pygame import mixer

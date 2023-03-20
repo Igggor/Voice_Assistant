@@ -143,7 +143,7 @@ def get_weather(city, open_weather_token = "e37d54207830a94eee9d3babc8b0d27f"):
         feel = data['main']['feels_like']
 
         return (f"Погода в городе: {city}\nТемпература: {cur_weather}° \nОщущается как {feel}°\n"
-              f"Влажность: {humidity}%\nДавление: {pressure} милиметров ртутного столба\nВетер: {wind} метров в секунду\n"
+              f"Влажность: {humidity}%\nДавление: {pressure} Паскалей \nВетер: {wind} метров в секунду\n"
               )
 
     except Exception as ex:

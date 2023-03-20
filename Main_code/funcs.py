@@ -33,17 +33,32 @@ def listen_command():
 
 def play_music(play = True):# Проигрование функции, но еще надо дописать
 
-    song = ('D:\Music\Би-2 - Лайки.mp3')
+    name = random.choice(os.listdir('D:\Music'))
+    song = os.path.join('D:\Music', name)
     from pygame import mixer
     mixer.init()
     mixer.music.load(song)
     if (play):
         mixer.music.set_volume(0.3)
         mixer.music.play()
-        return "Слушаем Би 2"
+        return f"Слушаем {name[:-4]}"
     else:
         mixer.music.stop()
         return "Музыка отключена"
+
+
+def next_track():
+
+    name = random.choice(os.listdir('D:\Music'))
+    song = os.path.join('D:\Music', name)
+    from pygame import mixer
+    mixer.init()
+    mixer.music.stop()
+    mixer.music.load(song)
+    mixer.music.set_volume(0.3)
+    mixer.music.play()
+    return f"Слушаем следующую композицию {name[:-4]}"
+
 
     #os.system('cd H:\Программирование\Python files\VoiceAssestant')
     #return "Не танцуем, я еще не умею включать музыку, извини, но я активно учусь" #f'Танцуем под {random_file.split("/")[-1]} 🔊🔊🔊'

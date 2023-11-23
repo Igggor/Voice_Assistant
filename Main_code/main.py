@@ -68,6 +68,7 @@ def main_bot():
     while(is_work):
         if (Settings.micro):
             query = listen_command()
+            Settings.action = True
             if query != 'Команда не распознана':
                 print(f"[Log] Распознано: {query}")
             if query.startswith(commands_dict["alias"]):
@@ -88,6 +89,7 @@ def main_bot():
                     speak(open_link(cmd.replace('найди', '', 1).replace("открой", '', 1)))
         else:
             time.sleep(1)
+        Settings.action = False
 
 if __name__ == '__main__':
     main_bot()

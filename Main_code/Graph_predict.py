@@ -3,6 +3,7 @@ from raylib import colors
 
 class Settings:
     micro = True
+    action = False
     micro_changed = False
     def exit_app():
         pyray.close_window()

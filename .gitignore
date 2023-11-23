@@ -2,3 +2,4 @@
 /.idea/
 /.gitignore/
 /Main_code/Music/
+Main_code/__pycache__/

@@ -26,9 +26,12 @@ def listen_command(listen: bool = True) -> str:
     if (listen == True):
         try:
             with speech_recognition.Microphone() as mic:
-                sr.adjust_for_ambient_noise(source=mic, duration=0.5)
-                audio = sr.listen(source=mic, timeout=2)
-                query = sr.recognize_google(audio_data=audio, language='ru-RU').lower()
+                try:
+                    sr.adjust_for_ambient_noise(source=mic, duration=0.5)
+                    audio = sr.listen(source=mic, timeout=2)
+                    query = sr.recognize_google(audio_data=audio, language='ru-RU').lower()
+                except:
+                    return 'Команда не распознана'
 
             return query
         except speech_recognition.UnknownValueError:
@@ -170,9 +173,14 @@ def clava():
 
 def sound_lvl():
     speak("Какую громкость вы хотите поставить")
-    x = int(listen_command())
+    x = listen_command()
+    while x == "Команда не распознана":
+        x = listen_command()
+        try:
+            x = int(x)
+        except: pass
     p.press('volumedown', presses=100)
-    p.press('volumeup', presses = x // 2)
+    p.press('volumeup', presses=x // 2)
     return f'Установлена громкость {x}'
 
 #Открытие браузера Google_Chrome
@@ -191,7 +199,7 @@ def open_link(what):
     if (what == " telegram"):
         webbrowser.open_new_tab("https://web.telegram.org/z/")
         return "телеграм открыт, пользуйся"
-    elif (what == " vk"):
+    elif (what == " vk" or what == 'vk' or what == 'вк' or what == " вк"):
         webbrowser.open_new_tab("https://vk.com/")
         return "вк открыт, потом расскажешь, что там нового в ленте"
     elif (what == " youtube"):

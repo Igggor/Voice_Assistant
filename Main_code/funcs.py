@@ -1,4 +1,5 @@
-import random
+"""v - 1.7.4"""
+from random import randint
 import pyautogui as p
 from selenium import webdriver
 import webbrowser
@@ -10,57 +11,28 @@ import requests
 import pyttsx3, os, time, datetime, requests
 import speech_recognition
 from prog_searcher import chrome_path
-from fuzzywuzzy import fuzz
 
 
+#Инициализация синтезатора и распознование речи
 sr = speech_recognition.Recognizer()
 sr.pause_threshold = 0.5
 speaker = pyttsx3.init()
+# speaker.setProperty()
 r = speech_recognition.Recognizer()
 m = speech_recognition.Microphone(device_index=1)
 
 #Слушаем, что сказал пользователь
-def listen_command():
-    try:
-        with speech_recognition.Microphone() as mic:
-            sr.adjust_for_ambient_noise(source=mic, duration=0.5)
-            audio = sr.listen(source=mic)
-            query = sr.recognize_google(audio_data=audio, language='ru-RU').lower()
+def listen_command(listen: bool = True) -> str:
+    if (listen == True):
+        try:
+            with speech_recognition.Microphone() as mic:
+                sr.adjust_for_ambient_noise(source=mic, duration=0.5)
+                audio = sr.listen(source=mic, timeout=2)
+                query = sr.recognize_google(audio_data=audio, language='ru-RU').lower()
 
-        return query
-    except speech_recognition.UnknownValueError:
-        return 'Команда не распознана'
-
-def play_music(play = True):# Проигрование функции, но еще надо дописать
-    name = random.choice(os.listdir('Music'))
-    song = os.path.join('Music', name)
-    from pygame import mixer
-    mixer.init()
-    mixer.music.load(song)
-    if (play):
-        mixer.music.set_volume(0.3)
-        mixer.music.play()
-        return f"Слушаем {name[:-4]}"
-    else:
-        mixer.music.stop()
-        return "Музыка отключена"
-
-
-def next_track():
-
-    name = random.choice(os.listdir('Music'))
-    song = os.path.join('Music', name)
-    from pygame import mixer
-    mixer.init()
-    mixer.music.stop()
-    mixer.music.load(song)
-    mixer.music.set_volume(0.3)
-    mixer.music.play()
-    return f"Слушаем следующую композицию {name[:-4]}"
-
-
-    #os.system('cd H:\Программирование\Python files\VoiceAssestant')
-    #return "Не танцуем, я еще не умею включать музыку, извини, но я активно учусь" #f'Танцуем под {random_file.split("/")[-1]} 🔊🔊🔊'
+            return query
+        except speech_recognition.UnknownValueError:
+            return 'Команда не распознана'
 
 def create_task():#Создание заметки в todo листе
     speak('Что добавим в список дел?')
@@ -79,11 +51,13 @@ anekdots = ["А вот к нам в студию пришло письмо от 
             "Объявление на пограничном столбе: Товарищи Нарушители! В связи с нехваткой патронов предупредительныевыстрелы в воздух больше не производим!"
             ]
 def get_anek():
-    return anekdots[random.randint(0, len(anekdots)-1)]
+    return anekdots[randint(0, len(anekdots)-1)]
 
 def date_now():
     now = datetime.datetime.now()
-    return ("Сейчас " + str(now.hour) + ":" + str(now.minute))
+    hour = str(now.hour)
+    minutes = str(now.minute)
+    return (f"Сейчас {hour}:{'0' * (2 - len(minutes))}{minutes}")
 
 #Функция tts
 def speak(sth):
@@ -95,7 +69,7 @@ def speak(sth):
 
 
 def thanks():
-    n = random.randint(0, 3)
+    n = randint(0, 3)
     print(n)
     match n:
         case 0: return "Всегда пожалуйста"
@@ -121,7 +95,7 @@ def curs():
 
 
 def greeting():
-    n = random.randint(0, 5)
+    n = randint(0, 5)
     match n:
         case 0: return "Приветик"
         case 1: return "Привет"
@@ -141,9 +115,8 @@ def weather():
     return get_weather(city)
 
 
-#open_weather_token = "e37d54207830a94eee9d3babc8b0d27f"
 
-def get_weather(city, open_weather_token = "e37d54207830a94eee9d3babc8b0d27f"):
+def get_weather(city, open_weather_token="e37d54207830a94eee9d3babc8b0d27f"):
 
 
     try:
@@ -151,24 +124,13 @@ def get_weather(city, open_weather_token = "e37d54207830a94eee9d3babc8b0d27f"):
             f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={open_weather_token}&units=metric"
         )
         data = r.json()
-        #pprint(data)
 
         city = data["name"]
         cur_weather = data["main"]["temp"]
 
-        weather_description = data["weather"][0]["main"]
-        #if weather_description in code_to_smile:
-        #    wd = code_to_smile[weather_description]
-        #else:
-        #    wd = "Посмотри в окно, не пойму что там за погода!"
-
         humidity = data["main"]["humidity"]
         pressure = data["main"]["pressure"]
         wind = data["wind"]["speed"]
-        sunrise_timestamp = datetime.datetime.fromtimestamp(data["sys"]["sunrise"])
-        sunset_timestamp = datetime.datetime.fromtimestamp(data["sys"]["sunset"])
-        length_of_the_day = datetime.datetime.fromtimestamp(data["sys"]["sunset"]) - datetime.datetime.fromtimestamp(
-            data["sys"]["sunrise"])
         feel = data['main']['feels_like']
 
         return (f"Погода в городе: {city}\nТемпература: {cur_weather}° \nОщущается как {feel}°\n"
@@ -213,28 +175,35 @@ def sound_lvl():
     p.press('volumeup', presses = x // 2)
     return f'Установлена громкость {x}'
 
-def chrome():
+#Открытие браузера Google_Chrome
+def chrome() -> str:
+    ch = subprocess.Popen(chrome_path)
     ch = subprocess.Popen(chrome_path)
     ch.poll()
     return "Открыт браузер хром"
 
 
-def open_link(what="telegram"):
-    if (what == "telegram"):
+def open_link(what):
+    webbrowser.register("chrome", None, webbrowser.BackgroundBrowser(chrome_path))
+    if ("в youtube видео" in what or "в ютубе видео" in what or "на ютубе видео" in what or "на youtube видео" in what or "видео на ютубе" in what or "на ютуби видео" in what or "видео на ютуби" in what):
+        webbrowser.open_new_tab(f'https://www.youtube.com/results?search_query={what.replace("в youtube видео", "").replace("в ютубе видео", "").replace("на ютубе видео", "").replace("на youtube видео", "").replace("видео на ютубе", "").replace("видео на youtube", "").replace("на ютуби видео", "").replace("видео на ютуби", "")}')
+        return 'Я открыл ютуб с таким запросом'
+    if (what == " telegram"):
         webbrowser.open_new_tab("https://web.telegram.org/z/")
         return "телеграм открыт, пользуйся"
-    elif (what == "vk"):
+    elif (what == " vk"):
         webbrowser.open_new_tab("https://vk.com/")
         return "вк открыт, потом расскажешь, что там нового в ленте"
-
-    elif (what == "youtube"):
+    elif (what == " youtube"):
         webbrowser.open_new_tab("https://www.youtube.com/")
         return "ютуб открыт, погнали смотреть"
+    else:
+        webbrowser.get(using='chrome').open_new_tab(f'https://yandex.ru/search/?text={what}')
+    return 'Я открыл запрОс в интернете, тут должен быть ответ'
 
-
-#def open(what):
-#    pass
-#r = 2
-#k = 2
-#print(r, sclon(r, 'rub'))
-#print(k, sclon(k, 'kop'))
+def reboot_sys():
+    print("REBOOTING")
+    speak("Система будет перезагружена через 3 секунды")
+    time.sleep(3)
+    import os
+    os.system("shutdown -t 0 -r -f")

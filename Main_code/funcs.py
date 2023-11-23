@@ -1,13 +1,8 @@
 """v - 1.7.4"""
 from random import randint
 import pyautogui as p
-from selenium import webdriver
 import webbrowser
 import subprocess
-from selenium.webdriver.common.by import By
-from bs4 import BeautifulSoup
-from requests import get
-import requests
 import pyttsx3, os, time, datetime, requests
 import speech_recognition
 from prog_searcher import chrome_path

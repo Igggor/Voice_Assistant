@@ -18,7 +18,11 @@ m = speech_recognition.Microphone(device_index=1)
 
 
 def listen_command(listen: bool = True) -> str:
-    """Слушаем, что сказал пользователь"""
+    """
+    Listening user`s micro
+    :param listen: boolean variable is micro ON
+    :return: recognized text or exception
+    """
     if (listen == True):
         try:
             with speech_recognition.Microphone() as mic:
@@ -35,7 +39,10 @@ def listen_command(listen: bool = True) -> str:
 
 
 def create_task():
-    """Создание заметки в todo листе"""
+    """
+    Creating task in todo-list
+    :return: log
+    """
     speak('Что добавим в список дел?')
     query = listen_command()
     with open('todo-list.txt', 'a') as file:
@@ -57,11 +64,14 @@ def get_anek():
     return anekdots[randint(0, len(anekdots)-1)]
 
 
-def date_now():
+def date_now() -> str:
+    """
+    :return: time format hh:mm
+    """
     now = datetime.datetime.now()
     hour = str(now.hour)
     minutes = str(now.minute)
-    return (f"Сейчас {hour}:{'0' * (2 - len(minutes))}{minutes}")
+    return f"Сейчас {hour}:{'0' * (2 - len(minutes))}{minutes}"
 
 
 def speak(sth: str):
@@ -83,6 +93,7 @@ def thanks():
         case 2: return "Был рад помочь"
         case 3: return "Не за что"
 
+
 def curs():
     data = requests.get('https://www.cbr-xml-daily.ru/daily_json.js').json()
     usd = round(data['Valute']['USD']['Value'], 2)
@@ -95,6 +106,7 @@ def curs():
           f"Доллар можно купить за {usd_rub} {sclon(usd_rub, 'rub')} {usd_kop} {sclon(usd_kop, 'kop')}.\n"
           f"Евро можно купить за {euro_rub} {sclon(euro_rub, 'rub')} {euro_kop} {sclon(euro_kop, 'kop')}.\n"
           )
+
 
 def greeting():
     n = randint(0, 5)

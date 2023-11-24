@@ -3,7 +3,7 @@ from random import randint
 import pyautogui as p
 import webbrowser
 import subprocess
-import pyttsx3, os, time, datetime, requests
+import pyttsx3, time, datetime, requests
 import speech_recognition
 from prog_searcher import chrome_path
 
@@ -12,7 +12,6 @@ from prog_searcher import chrome_path
 sr = speech_recognition.Recognizer()
 sr.pause_threshold = 0.5
 speaker = pyttsx3.init()
-# speaker.setProperty()
 r = speech_recognition.Recognizer()
 m = speech_recognition.Microphone(device_index=1)
 
@@ -75,8 +74,10 @@ def date_now() -> str:
 
 
 def speak(sth: str):
-    """text-to-speach function
-    sth - text
+    """
+    text-to-speach function
+    :param sth: text for speach
+    :return:
     """
     print(f"[log] said: {sth}")
     speaker.say(sth)
@@ -95,6 +96,10 @@ def thanks():
 
 
 def curs():
+    """
+    funcs get current curs
+    :return: euro and dollar curs
+    """
     data = requests.get('https://www.cbr-xml-daily.ru/daily_json.js').json()
     usd = round(data['Valute']['USD']['Value'], 2)
     euro = round(data['Valute']['EUR']['Value'], 2)
@@ -102,10 +107,9 @@ def curs():
     usd_kop = int(round(usd - int(usd), 2) * 100)
     euro_rub = int(euro)
     euro_kop = int(round(euro - int(euro), 2) * 100)
-    return  (f"Курс валют сейчас:\n"
-          f"Доллар можно купить за {usd_rub} {sclon(usd_rub, 'rub')} {usd_kop} {sclon(usd_kop, 'kop')}.\n"
+    return  f"Курс валют сейчас:\n"\
+          f"Доллар можно купить за {usd_rub} {sclon(usd_rub, 'rub')} {usd_kop} {sclon(usd_kop, 'kop')}.\n"\
           f"Евро можно купить за {euro_rub} {sclon(euro_rub, 'rub')} {euro_kop} {sclon(euro_kop, 'kop')}.\n"
-          )
 
 
 def greeting():
@@ -183,6 +187,10 @@ def clava():
 
 
 def sound_lvl():
+    """
+    func set a volume level
+    :return: text format 'set volume {number}'
+    """
     speak("Какую громкость вы хотите поставить")
     x = listen_command()
     while x == "Команда не распознана":
@@ -197,7 +205,10 @@ def sound_lvl():
 
 
 def chrome() -> str:
-    """Открытие браузера Google_Chrome"""
+    """
+    Google Crome browser opening
+    :return: text for speach
+    """
     ch = subprocess.Popen(chrome_path)
     ch.poll()
     return "Открыт браузер хром"

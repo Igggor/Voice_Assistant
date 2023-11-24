@@ -45,6 +45,8 @@ def create_task():
     """
     speak('Что добавим в список дел?')
     query = listen_command()
+    while query == "Команда не распознана":
+        query = listen_command()
     with open('todo-list.txt', 'a') as file:
         file.write(f'{query}\n')
     return f'Задача {query} создана и добавлена в список задач'

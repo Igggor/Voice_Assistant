@@ -16,8 +16,9 @@ speaker = pyttsx3.init()
 r = speech_recognition.Recognizer()
 m = speech_recognition.Microphone(device_index=1)
 
-#Слушаем, что сказал пользователь
+
 def listen_command(listen: bool = True) -> str:
+    """Слушаем, что сказал пользователь"""
     if (listen == True):
         try:
             with speech_recognition.Microphone() as mic:
@@ -32,7 +33,9 @@ def listen_command(listen: bool = True) -> str:
         except speech_recognition.UnknownValueError:
             return 'Команда не распознана'
 
-def create_task():#Создание заметки в todo листе
+
+def create_task():
+    """Создание заметки в todo листе"""
     speak('Что добавим в список дел?')
     query = listen_command()
     with open('todo-list.txt', 'a') as file:
@@ -48,8 +51,11 @@ anekdots = ["А вот к нам в студию пришло письмо от 
             "Сегодня Хэллоуин. Приду ненакрашенная",
             "Объявление на пограничном столбе: Товарищи Нарушители! В связи с нехваткой патронов предупредительныевыстрелы в воздух больше не производим!"
             ]
+
+
 def get_anek():
     return anekdots[randint(0, len(anekdots)-1)]
+
 
 def date_now():
     now = datetime.datetime.now()
@@ -57,13 +63,15 @@ def date_now():
     minutes = str(now.minute)
     return (f"Сейчас {hour}:{'0' * (2 - len(minutes))}{minutes}")
 
-#Функция tts
-def speak(sth):
+
+def speak(sth: str):
+    """text-to-speach function
+    sth - text
+    """
     print(f"[log] said: {sth}")
     speaker.say(sth)
     speaker.runAndWait()
     speaker.stop()
-
 
 
 def thanks():
@@ -74,8 +82,6 @@ def thanks():
         case 1: return "Пожалуйста"
         case 2: return "Был рад помочь"
         case 3: return "Не за что"
-
-
 
 def curs():
     data = requests.get('https://www.cbr-xml-daily.ru/daily_json.js').json()
@@ -90,8 +96,6 @@ def curs():
           f"Евро можно купить за {euro_rub} {sclon(euro_rub, 'rub')} {euro_kop} {sclon(euro_kop, 'kop')}.\n"
           )
 
-
-
 def greeting():
     n = randint(0, 5)
     match n:
@@ -103,9 +107,6 @@ def greeting():
         case 5: return 'Приветcтвую тебя!'
 
 
-
-
-
 def weather():
     speak("В каком городе ты хочешь узнать погоду?")
     city = listen_command()
@@ -113,10 +114,13 @@ def weather():
     return get_weather(city)
 
 
-
-def get_weather(city, open_weather_token="e37d54207830a94eee9d3babc8b0d27f"):
-
-
+def get_weather(city: str, open_weather_token: str = "e37d54207830a94eee9d3babc8b0d27f"):
+    """
+    function returns weather in current city
+    :param city: where you want to know the weather
+    :param open_weather_token: your open-weather token
+    :return: weather in city or exception
+    """
     try:
         r = requests.get(
             f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={open_weather_token}&units=metric"
@@ -161,10 +165,10 @@ def sclon(a, txt):
             return (("Копеек"))
 
 
-
 def clava():
     p.hotkey('shift', 'alt')
     return "язык ввода изменен"
+
 
 def sound_lvl():
     speak("Какую громкость вы хотите поставить")
@@ -173,14 +177,15 @@ def sound_lvl():
         x = listen_command()
         try:
             x = int(x)
-        except: pass
+        except:
+            pass
     p.press('volumedown', presses=100)
     p.press('volumeup', presses=x // 2)
     return f'Установлена громкость {x}'
 
-#Открытие браузера Google_Chrome
+
 def chrome() -> str:
-    ch = subprocess.Popen(chrome_path)
+    """Открытие браузера Google_Chrome"""
     ch = subprocess.Popen(chrome_path)
     ch.poll()
     return "Открыт браузер хром"
@@ -203,6 +208,7 @@ def open_link(what):
     else:
         webbrowser.get(using='chrome').open_new_tab(f'https://yandex.ru/search/?text={what}')
     return 'Я открыл запрОс в интернете, тут должен быть ответ'
+
 
 def reboot_sys():
     print("REBOOTING")

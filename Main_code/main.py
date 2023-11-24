@@ -1,22 +1,20 @@
 from funcs import *
 from Visual import Settings
 
-#Инициализация переменных
+"""Инициализация переменных"""
 sr = speech_recognition.Recognizer()
 sr.pause_threshold = 0.5
 speaker = pyttsx3.init()
 r = speech_recognition.Recognizer()
 m = speech_recognition.Microphone(device_index=1)
 is_work = True
-is_play = False
 
-
-#Слушаем и убираем шум
 with m as source:
+    """Слушаем и убираем шум"""
     r.adjust_for_ambient_noise(source)
 
 
-#Словарик с командами и основными словами бота, типо небольшая иишка
+"""Словарик с командами и основными словами бота, типо небольшая иишка"""
 commands_dict = {
     "alias": ('помощник','помоги', "help", "бот", "помощь", "боня", "о'кей" , "окей", "ok", "голосовой"),
     "tbr": ("помоги", 'скажи','расскажи','покажи','произнеси'),
@@ -38,32 +36,28 @@ commands_dict = {
         "off_micro": ['выключи микрофон', 'выключи микро', 'не слушай меня', 'включи микрофон', '', '']
     }
 }
+
 def off_micro():
     Settings.micro_changed = True
     return "Я тебя пока что не слушаю. Чтобы включить микрофон нажми на кнопку включения в приложении"
+
 def here():
     n = randint(1, 2)
-    if (n == 1):
+    if n == 1:
         return "Я тут, работаю, тебе помогаю"
-    elif (n == 2):
+    elif n == 2:
         return "Я тут. Жду Вашей команды!"
 
-# def anek():
-#     n = get_anek()
-#     return n
-
-
-
-#Отключение бота
 def off():
+    """Отключение бота"""
     global is_work
     is_work = False
     Settings.exit_app()
     exit(0)
 
 
-#Основнй цикл работы ассистента
 def main_bot():
+    """Основнй цикл работы ассистента"""
     speak("Приветствую, я голосовой помощник Боня, я готов помогать тебе")
     while(is_work):
         if (Settings.micro):

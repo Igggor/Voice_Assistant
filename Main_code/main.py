@@ -37,11 +37,21 @@ commands_dict = {
     }
 }
 
+
 def off_micro():
+    """
+    The function disables the device's microphone
+    :return: text for speach
+    """
     Settings.micro_changed = True
     return "Я тебя пока что не слушаю. Чтобы включить микрофон нажми на кнопку включения в приложении"
 
+
 def here():
+    """
+    The function answers if bot here
+    :return: text for speach
+    """
     n = randint(1, 2)
     if n == 1:
         return "Я тут, работаю, тебе помогаю"
@@ -49,7 +59,10 @@ def here():
         return "Я тут. Жду Вашей команды!"
 
 def off():
-    """Отключение бота"""
+    """
+    Disabling the bot and exiting the program
+    :return:
+    """
     global is_work
     is_work = False
     Settings.exit_app()
@@ -57,25 +70,24 @@ def off():
 
 
 def main_bot():
-    """Основнй цикл работы ассистента"""
+    """
+    the main bot`s function
+    :return:
+    """
     speak("Приветствую, я голосовой помощник Боня, я готов помогать тебе")
-    while(is_work):
-        if (Settings.micro):
+    while is_work:
+        if Settings.micro:
             query = listen_command()
             Settings.action = True
             if query != 'Команда не распознана':
                 print(f"[Log] Распознано: {query}")
             if query.startswith(commands_dict["alias"]):
-                # обращаются к боту
-                cmd = query
-                #Удаляем обраение к ассистенту
-                for x in commands_dict['alias']:
+                cmd = query # обращаются к боту
+                for x in commands_dict['alias']: #Удаляем обраение к ассистенту
                     cmd = cmd.replace(x, "").strip()
-                #Удаляем действие
-                for x in commands_dict['tbr']:
+                for x in commands_dict['tbr']: #Удаляем действие
                     cmd = cmd.replace(x, "").strip()
-                #Получаем команду
-                for k, v in commands_dict['commands'].items():
+                for k, v in commands_dict['commands'].items(): #Получаем команду
                     if cmd in v:
                         speak(globals()[k]())
                         break

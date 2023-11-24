@@ -8,7 +8,8 @@ import speech_recognition
 from prog_searcher import chrome_path
 
 
-#Инициализация синтезатора и распознование речи
+
+"""Synthesizer initialization and speech recognition"""
 sr = speech_recognition.Recognizer()
 sr.pause_threshold = 0.5
 speaker = pyttsx3.init()
